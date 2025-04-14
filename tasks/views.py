@@ -1,5 +1,3 @@
-from tkinter import TkVersion
-
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
