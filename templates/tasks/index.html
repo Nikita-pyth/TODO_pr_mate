@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>TODO list</h1>
+  <ul class="list-group">
+    {% for task in task_list %}
+      <li class="list-group-item border-top mt-3">
+        <p><strong>{{ task.content }}</strong></p>
+        <p>Completion status:
+          {% if task.completion_status %}
+            <span class="text-success fw-bold">Done</span>
+          {% else %}
+            <span class="text-danger fw-bold">Not Done</span>
+          {% endif %}
+        </p>
+        <p>Created at: {{ task.created_at }}</p>
+
+        {% if task.deadline %}
+          <p>Deadline: {{ task.deadline }}</p>
+        {% endif %}
+
+        {% if task.tags.all %}
+          <p>Tags:</p>
+          <ul>
+            {% for tag in task.tags.all %}
+              <li>{{ tag.name }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <div class="d-flex gap-2 mt-3">
+          {% if task.completion_status %}
+            <a href="{% url 'tasks:task-change-status' task.id %}" class="btn btn-secondary">Undo</a>
+          {% else %}
+            <a href="{% url 'tasks:task-change-status' task.id %}" class="btn btn-success">Complete</a>
+          {% endif %}
+          <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-warning">Update</a>
+          <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </li>
+
+    {% endfor %}
+  </ul>
+  <a class="btn btn-primary position-fixed top-0 end-0 m-3" href="{% url 'tasks:task-create' %}">Create</a>
+{% endblock %}
